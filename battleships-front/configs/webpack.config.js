@@ -1,60 +1,80 @@
-const path = require('path')
-const Webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const Config = require('webpack-config').default
-const { CheckerPlugin } = require('awesome-typescript-loader')
+const path = require('path');
+const Webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Config = require('webpack-config').default;
+const { CheckerPlugin } = require('awesome-typescript-loader');
 
 module.exports = new Config().merge({
-  entry: ["./src/components/Root.tsx"],
+  entry: ['./src/components/Root.tsx'],
   output: {
     path: path.resolve('./build'),
-    publicPath: '/',
+    publicPath: '/'
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx'],
-    modules: [path.resolve('./src'), 'node_modules'],
+    modules: [path.resolve('./src'), 'node_modules']
   },
   module: {
     rules: [
-      { test: /\.tsx?$/, loader: 'awesome-typescript-loader', include: path.resolve('./src') },
+      {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
+        include: path.resolve('./src')
+      },
       {
         test: /\.(png|jpg)$/,
-        use: { loader: 'file-loader', options: { name: 'images/[name].[hash].[ext]' } },
+        use: {
+          loader: 'file-loader',
+          options: { name: 'images/[name].[hash].[ext]' }
+        }
       },
       {
         test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,
         use: {
           loader: 'file-loader',
-          options: { name: 'fonts/[name].[hash].[ext]', mimetype: 'application/font-woff' },
-        },
+          options: {
+            name: 'fonts/[name].[hash].[ext]',
+            mimetype: 'application/font-woff'
+          }
+        }
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         use: {
           loader: 'file-loader',
-          options: { name: 'fonts/[name].[hash].[ext]', mimetype: 'application/octet-stream' },
-        },
+          options: {
+            name: 'fonts/[name].[hash].[ext]',
+            mimetype: 'application/octet-stream'
+          }
+        }
       },
       {
         test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        use: { loader: 'file-loader', options: { name: 'fonts/[name].[hash].[ext]' } },
+        use: {
+          loader: 'file-loader',
+          options: { name: 'fonts/[name].[hash].[ext]' }
+        }
       },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         use: {
           loader: 'file-loader',
-          options: { name: 'images/[name].[hash].[ext]', mimetype: 'image/svg+xml' },
-        },
-      },
-    ],
+          options: {
+            name: 'images/[name].[hash].[ext]',
+            mimetype: 'image/svg+xml'
+          }
+        }
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({ template: 'index.html', favicon: 'favicon.ico' }),
     new Webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      },
+        USE_LOCAL_STORAGE: JSON.stringify(process.env.USE_LOCAL_STORAGE)
+      }
     }),
-    new CheckerPlugin(),
-  ],
-})
+    new CheckerPlugin()
+  ]
+});

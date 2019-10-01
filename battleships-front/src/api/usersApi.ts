@@ -1,11 +1,32 @@
-import * as queryString from 'query-string'
-import fetcher from './fetcher'
-import { Game, GamesFilters, GameNormalized } from '../types'
+import { fetcher, storager } from '../helpers';
+import { ApiRequestOptions, LocalStorageSelectors, User } from '../types';
 
-const gamesApi: string = '/games'
+const usersApiOptions: ApiRequestOptions = { key: 'users' };
 
-export const getGamesApi = (filters: GamesFilters = {}): Promise<Game[]> =>
-    fetcher.get(`${gamesApi}?${queryString.stringify(filters)}`)
+export const loginUserApi = (user: User): Promise<User | undefined> => {
+  const findUserSelector: LocalStorageSelectors = {
+    selector: (values: User[]) =>
+      values.find(x => x.name === user.name && x.pass === user.pass)
+  };
 
-export const addGameApi = (game: GameNormalized): Promise<Game> => 
-    fetcher.post(gamesApi, game)
+  setCurrentUser(user);
+
+  return fetcher.get({ ...usersApiOptions, data: user }, findUserSelector);
+};
+
+export const addUserApi = (user: User): Promise<User> => {
+  const alreadyHasUserNameSelector: LocalStorageSelectors = {
+    rejectSelector: (values: User[]) => values.some(x => x.name === user.name),
+    rejectMessage: 'Name already taken'
+  };
+
+  setCurrentUser(user);
+
+  return fetcher.post(
+    { ...usersApiOptions, data: user },
+    alreadyHasUserNameSelector
+  );
+};
+
+// TODO decide how to persist user session, encryption etc..
+const setCurrentUser = (user: User) => storager.set('currentUser', user);

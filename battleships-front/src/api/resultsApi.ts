@@ -1,11 +1,21 @@
-import * as queryString from 'query-string'
-import fetcher from './fetcher'
-import { Game, GamesFilters, GameNormalized } from '../types'
+import { fetcher } from '../helpers';
+import { ApiRequestOptions, LocalStorageSelectors, Result } from '../types';
 
-const gamesApi: string = '/games'
+const resultsApiOptions: ApiRequestOptions = { key: 'results' };
 
-export const getGamesApi = (filters: GamesFilters = {}): Promise<Game[]> =>
-    fetcher.get(`${gamesApi}?${queryString.stringify(filters)}`)
+export const getResultsApi = (): Promise<Result[]> =>
+  fetcher.get(resultsApiOptions);
 
-export const addGameApi = (game: GameNormalized): Promise<Game> => 
-    fetcher.post(gamesApi, game)
+export const getResultsByUserApi = (userId: string): Promise<Result[]> => {
+  const findResultByUserSelector: LocalStorageSelectors = {
+    selector: (values: Result[]) => values.filter(x => x.userId === userId)
+  };
+
+  return fetcher.get(
+    { ...resultsApiOptions, path: userId },
+    findResultByUserSelector
+  );
+};
+
+export const addResultApi = (result: Result): Promise<Result> =>
+  fetcher.post({ ...resultsApiOptions, data: result });

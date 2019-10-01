@@ -1,6 +1,7 @@
-import { User, Result } from ".";
+import { Result, User } from '.';
 
 export interface Entities {
-    readonly users: { [key: string]: User }
-    readonly results: { [key: string]: Result }
+  readonly currentUser: User;
+  readonly users: { [key: string]: User };
+  readonly results: { [key: string]: Result };
 }

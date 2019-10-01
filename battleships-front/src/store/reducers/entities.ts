@@ -1,18 +1,19 @@
-import { AnyAction } from 'redux'
-import { Entities } from '../../types'
+import { AnyAction } from 'redux';
+import { storager } from '../../helpers';
+import { Entities } from '../../types';
 
 const entities = (
   state: Entities = {
+    currentUser: storager.get('currentUser'),
     users: {},
     results: {}
   },
-  action: AnyAction,
+  action: AnyAction
 ): Entities => {
   switch (action.type) {
-
     default:
-      return state
+      return state;
   }
-}
+};
 
-export default entities
+export default entities;
