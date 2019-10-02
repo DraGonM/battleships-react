@@ -1,13 +1,14 @@
 import { History } from 'history';
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { Link, Redirect, Route, Router, Switch } from 'react-router-dom';
+import { Redirect, Route, Router, Switch } from 'react-router-dom';
 import { Store } from 'redux';
 import { State } from '../types';
 import Game from './Game';
 import Ladder from './Ladder';
 import Login from './Login';
 import Profile from './Profile';
+import { AppContainer, Menu, NavButton } from './Styled';
 
 interface Props {
   store: Store<State>;
@@ -21,20 +22,12 @@ class App extends React.PureComponent<Props> {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <div>
-            <nav>
-              <ul>
-                <li>
-                  <Link to="/profile">Profile</Link>
-                </li>
-                <li>
-                  <Link to="/ladder">Ladder</Link>
-                </li>
-                <li>
-                  <Link to="/game">Game</Link>
-                </li>
-              </ul>
-            </nav>
+          <AppContainer>
+            <Menu>
+              <NavButton to="/profile">Profile</NavButton>
+              <NavButton to="/ladder">Ladder</NavButton>
+              <NavButton to="/game">Game</NavButton>
+            </Menu>
 
             <Switch>
               <Route path="/login" component={Login} />
@@ -43,7 +36,7 @@ class App extends React.PureComponent<Props> {
               <Route path="/game" component={Game} />
               <Redirect exact from={`/`} to={'/login'} />
             </Switch>
-          </div>
+          </AppContainer>
         </Router>
       </Provider>
     );
