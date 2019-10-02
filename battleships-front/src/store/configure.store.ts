@@ -1,21 +1,16 @@
-import { History } from 'history'
-import { applyMiddleware, compose, createStore, Store } from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import createRootReducer from './reducers'
-import { State } from '../types'
+import { applyMiddleware, compose, createStore, Store } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { State } from '../types';
+import createRootReducer from './reducers';
 
-export default function configureStore(history: History): Store<State> {
-  const initialState = {}
+export default function configureStore(): Store<State> {
+  const initialState = {};
 
   const store = createStore(
-    createRootReducer(history),
+    createRootReducer,
     initialState,
-    compose(
-      applyMiddleware(
-        thunkMiddleware, 
-      )
-    ),
-  )
+    compose(applyMiddleware(thunkMiddleware))
+  );
 
-  return store
+  return store;
 }

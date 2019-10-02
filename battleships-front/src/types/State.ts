@@ -1,5 +1,5 @@
-import { Entities } from '.'
+import { Entities } from '.';
 
 export interface State {
-    readonly entities: Entities
+  readonly entities: Entities;
 }

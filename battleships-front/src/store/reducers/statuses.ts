@@ -1,44 +1,49 @@
-import { StatusesState } from "../../types"
-import { asyncSuffixes } from "../actions/actionsHelpers"
+import { StatusesState } from '../../types';
+import { asyncSuffixes } from '../actions/actionsHelpers';
 
 export default (
   state: StatusesState = {
-    loadCurrentUser: { isRunning: false },
-    loadResults: { isRunning: false },
-    loadResultsByUser: { isRunning: false },
+    loginUser: { isRunning: false },
+    addUser: { isRunning: false },
+    getResults: { isRunning: false },
+    getResultsByUser: { isRunning: false },
+    addResult: { isRunning: false }
   },
-  action: any,
+  action: any
 ) => {
-  const { type, statusKey } = action
+  const { type, statusKey } = action;
 
   if (type.indexOf(asyncSuffixes.request) !== -1) {
-    return { 
-      ...state, 
+    return {
+      ...state,
       [statusKey]: {
         error: undefined,
-        isRunning: true,
-    }}
+        isRunning: true
+      }
+    };
   }
 
   if (type.indexOf(asyncSuffixes.success) !== -1) {
-    return { 
-      ...state, 
+    return {
+      ...state,
       [statusKey]: {
         error: undefined,
         isRunning: false,
-        lastUpdated: action.lastUpdated,
-    }}
+        lastUpdated: action.lastUpdated
+      }
+    };
   }
 
   if (type.indexOf(asyncSuffixes.failure) !== -1) {
-    return { 
-      ...state, 
+    return {
+      ...state,
       [statusKey]: {
         error: action.error,
         isRunning: false,
-        lastUpdated: undefined,
-    }}
+        lastUpdated: undefined
+      }
+    };
   }
-  
-  return state
-}
+
+  return state;
+};

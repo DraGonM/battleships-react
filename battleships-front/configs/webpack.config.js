@@ -5,7 +5,7 @@ const Config = require('webpack-config').default;
 const { CheckerPlugin } = require('awesome-typescript-loader');
 
 module.exports = new Config().merge({
-  entry: ['./src/components/Root.tsx'],
+  entry: ['./src/components/App.tsx'],
   output: {
     path: path.resolve('./build'),
     publicPath: '/'
@@ -72,7 +72,7 @@ module.exports = new Config().merge({
     new Webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        USE_LOCAL_STORAGE: JSON.stringify(process.env.USE_LOCAL_STORAGE)
+        STORAGE: JSON.stringify(process.env.STORAGE)
       }
     }),
     new CheckerPlugin()

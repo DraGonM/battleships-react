@@ -7,3 +7,4 @@ export * from './Status';
 export * from './StatusesState';
 export * from './ApiRequestOptions';
 export * from './LocalStorageSelectors';
+export * from './NormalizedSchemes';

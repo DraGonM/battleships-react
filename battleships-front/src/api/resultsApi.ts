@@ -8,7 +8,7 @@ export const getResultsApi = (): Promise<Result[]> =>
 
 export const getResultsByUserApi = (userId: string): Promise<Result[]> => {
   const findResultByUserSelector: LocalStorageSelectors = {
-    selector: (values: Result[]) => values.filter(x => x.userId === userId)
+    selector: (values: Result[]) => values.filter(x => x.user.id === userId)
   };
 
   return fetcher.get(

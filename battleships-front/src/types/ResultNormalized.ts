@@ -1,8 +1,6 @@
-import { User } from './User';
-
 export interface Result {
   id: string;
-  user: User;
+  user: string;
   score: number;
   time: string;
 }
