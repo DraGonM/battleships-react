@@ -8,7 +8,9 @@ import Game from './Game';
 import Ladder from './Ladder';
 import Login from './Login';
 import Profile from './Profile';
-import { AppContainer, Menu, NavButton } from './Styled';
+import { FlexColumnCenter, theme, GlobalStyle } from './Styled';
+import { ThemeProvider } from 'styled-components';
+import NavMenu from './Common/NavMenu'
 
 interface Props {
   store: Store<State>;
@@ -20,27 +22,27 @@ class App extends React.PureComponent<Props> {
     const { store, history } = this.props;
 
     return (
-      <Provider store={store}>
-        <Router history={history}>
-          <AppContainer>
-            <Menu>
-              <NavButton to="/profile">Profile</NavButton>
-              <NavButton to="/ladder">Ladder</NavButton>
-              <NavButton to="/game">Game</NavButton>
-            </Menu>
-
-            <Switch>
-              <Route path="/login" component={Login} />
-              <Route path="/profile" component={Profile} />
-              <Route path="/ladder" component={Ladder} />
-              <Route path="/game" component={Game} />
-              <Redirect exact from={`/`} to={'/login'} />
-            </Switch>
-          </AppContainer>
-        </Router>
-      </Provider>
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+          <Router history={history}>
+            <FlexColumnCenter>
+              <GlobalStyle />
+              <NavMenu />
+              <Switch>
+                <Route path="/login" component={Login} />
+                <Route path="/profile" component={Profile} />
+                <Route path="/ladder" component={Ladder} />
+                <Route path="/game" component={Game} />
+                <Redirect exact from={`/`} to={'/login'} />
+              </Switch>
+            </FlexColumnCenter>
+          </Router>
+        </Provider>
+      </ThemeProvider>
     );
   }
 }
 
 export default App;
+
+

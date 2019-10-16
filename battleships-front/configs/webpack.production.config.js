@@ -1,7 +1,4 @@
-const Webpack = require('webpack');
 const TerserPlugin = require('terser-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Config = require('webpack-config').default;
 
 module.exports = new Config().extend('./configs/webpack.config.js').merge({
@@ -10,18 +7,6 @@ module.exports = new Config().extend('./configs/webpack.config.js').merge({
   output: {
     filename: '[name].[contenthash].js',
     chunkFilename: '[name].[contenthash].chunk.js'
-  },
-  module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
-      },
-      {
-        test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader']
-      }
-    ]
   },
   optimization: {
     splitChunks: {
@@ -54,11 +39,5 @@ module.exports = new Config().extend('./configs/webpack.config.js').merge({
       })
     ]
   },
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[name].[contenthash].css'
-    })
-  ],
   devtool: 'source-map'
 });

@@ -8,3 +8,4 @@ export * from './StatusesState';
 export * from './ApiRequestOptions';
 export * from './LocalStorageSelectors';
 export * from './NormalizedSchemes';
+export * from './FormFieldProps';

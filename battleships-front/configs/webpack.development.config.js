@@ -14,25 +14,9 @@ module.exports = new Config().extend('./configs/webpack.config.js').merge({
     filename: '[name].js',
     chunkFilename: '[name].chunk.js'
   },
-  module: {
-    rules: [
-      {
-        test: /\.scss$/,
-        use: [
-          { loader: 'style-loader' },
-          { loader: 'css-loader' },
-          { loader: 'sass-loader' }
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [{ loader: 'style-loader' }, { loader: 'css-loader' }]
-      }
-    ]
-  },
   plugins: [
     new Webpack.HotModuleReplacementPlugin(),
-    new Webpack.NamedModulesPlugin()
+    new Webpack.NamedModulesPlugin(),
     // show packages size stats in browser
     // new BundleAnalyzerPlugin(),
   ],
