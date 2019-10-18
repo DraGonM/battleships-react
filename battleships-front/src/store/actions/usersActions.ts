@@ -8,6 +8,6 @@ const loginAction = makeAsyncAction(loginTypes, loginApi);
 export const loginUser = (user: User) => loginAction(user);
 
 export const LOGOUT = 'LOGOUT';
-export const logout = (): AnyAction => ({
+export const logoutUser = (): AnyAction => ({
   type: LOGOUT
 });

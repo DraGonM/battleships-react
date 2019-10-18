@@ -12,3 +12,4 @@ export * from './FormFieldProps';
 export * from './FormFieldProps';
 export * from './ThunkStateDispatch';
 export * from './Routes';
+export * from './IconProps';

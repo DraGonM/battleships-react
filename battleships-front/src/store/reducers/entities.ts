@@ -6,7 +6,8 @@ import {
   addResultTypes,
   getResultsByUserTypes,
   getResultsTypes,
-  loginTypes
+  loginTypes,
+  LOGOUT
 } from '../actions';
 import Schemes from '../schemes';
 
@@ -26,17 +27,18 @@ const entities = (
       // TODO decide how to persist user session, encryption etc..
       storager.set('currentUser', payload);
 
-      console.log('login.success:', payload);
-
       const mergedState: Entities = {
         ...state,
         ...normalizedEntities,
         currentUser: payload
       };
 
-      console.log('mergedState:', mergedState);
-
       return mergedState;
+    }
+
+    case LOGOUT: {
+      storager.set('currentUser', null);
+      return { ...state, currentUser: undefined }
     }
 
     case getResultsByUserTypes.success:

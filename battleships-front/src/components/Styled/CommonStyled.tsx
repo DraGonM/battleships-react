@@ -15,15 +15,24 @@ export const FlexRow = styled.div`
   flex-direction: row;
 `;
 
+export const HeaderContainer = styled(FlexRow)`
+  justify-content: space-between;
+`
+
 export const FormColumn = styled(Form)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 `;
 
-export const FormLabel = styled.label`
+export const Label = styled.label`
+  color: ${props => props.theme.colors.input};
   font-size: 20px;
   margin: ${props => props.theme.padding};
+`
+
+export const FormLabel = styled(Label)`
+  color: ${props => props.theme.colors.inputFont};
 `;
 
 export const FormError = styled(ErrorMessage)`
@@ -43,22 +52,39 @@ export const FormFieldContainer = styled.div`
   margin: 0.5rem;
 `;
 
-export const PrimaryButton = styled.button`
+export const Button = styled.button`
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  background-color: ${props => props.theme.colors.primary};
-  color: ${props => props.theme.colors.buttonFont};
   font-size: 16px;
   padding: ${props => props.theme.padding};
-  margin: ${props => props.theme.margin};
   border-radius: ${props => props.theme.borderRadius};
   border: none;
   text-align: center;
   text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    filter: brightness(90%);
+  }
+
+  &:active {
+    filter: brightness(85%);
+  }
 
   &:disabled {
     filter: brightness(75%);
   }
+`
+
+export const PrimaryButton = styled(Button)`
+  background-color: ${props => props.theme.colors.primary};
+  color: ${props => props.theme.colors.input};
+  border: 1px solid ${props => props.theme.colors.darkPrimary};
+`;
+
+export const SecondaryButton = styled(Button)`
+  background-color: ${props => props.theme.colors.secondary};
+  color: ${props => props.theme.colors.input};
 `;

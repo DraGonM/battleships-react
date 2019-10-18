@@ -7,14 +7,14 @@ import { ThemeProvider } from 'styled-components';
 import { routes, storager } from '../helpers';
 import { loginUser } from '../store/actions';
 import { State, Status, ThunkStateDispatch, User } from '../types';
-import NavMenu from './Common/NavMenu';
+import Header from './Common/Header';
 import PrivateRoute from './Common/PrivateRoute';
 import StatusLoader from './Common/StatusLoader';
 import Game from './Game';
 import Ladder from './Ladder';
 import Login from './Login';
 import Profile from './Profile';
-import { FlexColumnCenter, GlobalStyle, theme } from './Styled';
+import { GlobalStyle, theme } from './Styled';
 
 interface Props {
   store: Store<State>;
@@ -45,52 +45,49 @@ class App extends React.PureComponent<AllProps> {
   render() {
     const { store, history, loginStatus, currentUser } = this.props;
 
-    console.log('APP RENDER, currentUser:', currentUser);
     const isLoggedIn = !!currentUser;
 
     return (
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <Router history={history}>
-            <FlexColumnCenter>
-              <StatusLoader status={loginStatus}>
-                <>
-                  <GlobalStyle />
-                  <NavMenu />
-                  <Switch>
-                    <PrivateRoute
-                      path={routes.login}
-                      redirectTo={routes.game}
-                      redirectIf={isLoggedIn}
-                      component={Login}
-                    />
-                    <PrivateRoute
-                      path={routes.profile}
-                      redirectTo={routes.login}
-                      redirectIf={!isLoggedIn}
-                      component={Profile}
-                    />
-                    <PrivateRoute
-                      path={routes.ladder}
-                      redirectTo={routes.login}
-                      redirectIf={!isLoggedIn}
-                      component={Ladder}
-                    />
-                    <PrivateRoute
-                      path={routes.game}
-                      redirectTo={routes.login}
-                      redirectIf={!isLoggedIn}
-                      component={Game}
-                    />
-                    <Redirect
-                      exact
-                      from={`/`}
-                      to={currentUser ? routes.game : routes.login}
-                    />
-                  </Switch>
-                </>
-              </StatusLoader>
-            </FlexColumnCenter>
+            <StatusLoader status={loginStatus}>
+              <>
+                <GlobalStyle />
+                <Header />
+                <Switch>
+                  <PrivateRoute
+                    path={routes.login}
+                    redirectTo={routes.game}
+                    redirectIf={isLoggedIn}
+                    component={Login}
+                  />
+                  <PrivateRoute
+                    path={routes.profile}
+                    redirectTo={routes.login}
+                    redirectIf={!isLoggedIn}
+                    component={Profile}
+                  />
+                  <PrivateRoute
+                    path={routes.ladder}
+                    redirectTo={routes.login}
+                    redirectIf={!isLoggedIn}
+                    component={Ladder}
+                  />
+                  <PrivateRoute
+                    path={routes.game}
+                    redirectTo={routes.login}
+                    redirectIf={!isLoggedIn}
+                    component={Game}
+                  />
+                  <Redirect
+                    exact
+                    from={`/`}
+                    to={currentUser ? routes.game : routes.login}
+                  />
+                </Switch>
+              </>
+            </StatusLoader>
           </Router>
         </Provider>
       </ThemeProvider>

@@ -9,10 +9,11 @@ declare module 'styled-components' {
     colors: {
       primary: string;
       secondary: string;
-      buttonFont: string;
       input: string;
+      inputFont: string;
       error: string;
       darkPrimary: string;
+      selected: string;
     };
     fonts: {
       family: string;
@@ -28,10 +29,11 @@ export const theme: DefaultTheme = {
   colors: {
     primary: '#1e88fd',
     secondary: '#c8c8c8',
-    buttonFont: '#fff',
     input: '#fff',
+    inputFont: '#272727',
     error: '#ff321c',
-    darkPrimary: '#223eff'
+    darkPrimary: '#223eff',
+    selected: '#3e7cbf'
   },
   fonts: {
     family: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"

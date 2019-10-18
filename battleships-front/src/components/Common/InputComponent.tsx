@@ -47,7 +47,6 @@ class InputComponent extends React.PureComponent<Props, ReactState> {
     }
 
     onChangeCallback = (value: string) => {
-        console.log('onChangeCallback:', value)
         this.props.onChange(value)
     }
   

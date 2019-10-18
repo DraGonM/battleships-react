@@ -14,7 +14,7 @@ export const Loader = styled.div`
   top: 45%;
   left: 45%;
   position: fixed;
-  border: 8px solid ${props => props.theme.colors.input};
+  border: 8px solid ${props => props.theme.colors.secondary};
   border-top: 8px solid ${props => props.theme.colors.darkPrimary};
   border-radius: 50%;
   width: 32px;

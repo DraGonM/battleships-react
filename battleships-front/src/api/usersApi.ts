@@ -12,7 +12,5 @@ export const loginApi = (user: User): Promise<User | undefined> => {
     createNewIfNull: true
   };
 
-  console.log('loginUserApi:', user);
-
   return fetcher.get({ ...usersApiOptions, data: user }, loginStorageOptions);
 };

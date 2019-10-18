@@ -16,8 +16,6 @@ export const storager = {
     const values: any[] = storager.get(key);
     const result = values && selector ? selector(values) : values;
 
-    console.log('result:', result);
-
     await sleep(1000);
 
     if (createNewIfNull && !result)
@@ -29,7 +27,7 @@ export const storager = {
     const valueToSave = !value ? null : value;
     localStorage.setItem(key, JSON.stringify(valueToSave));
   },
-  setPromisified: (
+  setPromisified: async (
     key: string,
     value: any,
     selectors: LocalStorageOptions = {}
@@ -37,6 +35,8 @@ export const storager = {
     const { rejectSelector, rejectMessage } = selectors;
     const values: any[] = storager.get(key);
 
+    await sleep(1000);
+    
     if (values && rejectSelector && rejectSelector(values))
       return Promise.reject(rejectMessage);
 
