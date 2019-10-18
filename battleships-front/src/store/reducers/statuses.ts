@@ -3,11 +3,10 @@ import { asyncSuffixes } from '../actions/actionsHelpers';
 
 export default (
   state: StatusesState = {
-    loginUser: { isRunning: false },
-    addUser: { isRunning: false },
-    getResults: { isRunning: false },
-    getResultsByUser: { isRunning: false },
-    addResult: { isRunning: false }
+    login: { isRunning: false },
+    getresults: { isRunning: false },
+    getresultsbyuser: { isRunning: false },
+    addresult: { isRunning: false }
   },
   action: any
 ) => {

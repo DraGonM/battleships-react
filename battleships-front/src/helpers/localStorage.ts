@@ -1,21 +1,29 @@
-import { LocalStorageSelectors } from '../types';
+import { LocalStorageOptions } from '../types';
+
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const storager = {
   get: (key: string): any => {
     const value = localStorage.getItem(key);
     return value && value !== 'undefined' && JSON.parse(value);
   },
-  getPromisified: (
+  getPromisified: async (
     key: string,
-    selectors: LocalStorageSelectors = {}
+    value: any,
+    selectors: LocalStorageOptions = {}
   ): Promise<any> => {
+    const { selector, createNewIfNull } = selectors;
     const values: any[] = storager.get(key);
-    const { selector, rejectSelector, rejectMessage } = selectors;
+    const result = values && selector ? selector(values) : values;
 
-    if (rejectSelector && rejectSelector(values))
-      return Promise.reject(rejectMessage);
+    console.log('result:', result);
 
-    return Promise.resolve(values && selector ? selector(values) : values);
+    await sleep(1000);
+
+    if (createNewIfNull && !result)
+      return storager.setPromisified(key, value, selectors);
+
+    return Promise.resolve(result);
   },
   set: (key: string, value: any): void => {
     const valueToSave = !value ? null : value;
@@ -24,12 +32,12 @@ export const storager = {
   setPromisified: (
     key: string,
     value: any,
-    selectors: LocalStorageSelectors = {}
+    selectors: LocalStorageOptions = {}
   ): Promise<any> => {
-    const values: any[] = storager.get(key);
     const { rejectSelector, rejectMessage } = selectors;
+    const values: any[] = storager.get(key);
 
-    if (rejectSelector && rejectSelector(values))
+    if (values && rejectSelector && rejectSelector(values))
       return Promise.reject(rejectMessage);
 
     value = { ...value, id: values ? values.length : 0 };

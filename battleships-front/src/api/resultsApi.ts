@@ -1,5 +1,5 @@
 import { fetcher } from '../helpers';
-import { ApiRequestOptions, LocalStorageSelectors, Result } from '../types';
+import { ApiRequestOptions, LocalStorageOptions, Result } from '../types';
 
 const resultsApiOptions: ApiRequestOptions = { key: 'results' };
 
@@ -7,7 +7,7 @@ export const getResultsApi = (): Promise<Result[]> =>
   fetcher.get(resultsApiOptions);
 
 export const getResultsByUserApi = (userId: string): Promise<Result[]> => {
-  const findResultByUserSelector: LocalStorageSelectors = {
+  const findResultByUserSelector: LocalStorageOptions = {
     selector: (values: Result[]) => values.filter(x => x.user.id === userId)
   };
 

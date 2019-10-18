@@ -1,5 +1,5 @@
 import * as queryString from 'query-string';
-import { ApiRequestOptions, LocalStorageSelectors } from '../types';
+import { ApiRequestOptions, LocalStorageOptions } from '../types';
 import { storager } from './localStorage';
 
 const config: string =
@@ -16,10 +16,10 @@ function handleErrors(response: Response) {
 }
 
 export const fetcher = {
-  get: (options: ApiRequestOptions, selectors?: LocalStorageSelectors) => {
+  get: (options: ApiRequestOptions, selectors?: LocalStorageOptions) => {
     const { key, path, data } = options;
 
-    if (useLocalStorage) return storager.getPromisified(key, selectors);
+    if (useLocalStorage) return storager.getPromisified(key, data, selectors);
 
     let fullPath = `${config}/${key}`;
 
@@ -33,7 +33,7 @@ export const fetcher = {
       .then(response => response.json());
   },
 
-  post: (options: ApiRequestOptions, selectors?: LocalStorageSelectors) => {
+  post: (options: ApiRequestOptions, selectors?: LocalStorageOptions) => {
     const { key, data } = options;
 
     if (useLocalStorage) return storager.setPromisified(key, data, selectors);

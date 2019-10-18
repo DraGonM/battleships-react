@@ -4,35 +4,37 @@ import { storager } from '../../helpers';
 import { Entities } from '../../types';
 import {
   addResultTypes,
-  addUserTypes,
   getResultsByUserTypes,
   getResultsTypes,
-  loginUserTypes
+  loginTypes
 } from '../actions';
 import Schemes from '../schemes';
 
 const entities = (
   state: Entities = {
-    currentUser: storager.get('currentUser'),
+    currentUser: undefined,
     users: {},
     results: {}
   },
   action: AnyAction
 ): Entities => {
   switch (action.type) {
-    case loginUserTypes.success:
-    case addUserTypes.success: {
+    case loginTypes.success: {
       const { payload } = action;
       const normalizedEntities = normalize(payload, Schemes.User).entities;
 
       // TODO decide how to persist user session, encryption etc..
       storager.set('currentUser', payload);
 
+      console.log('login.success:', payload);
+
       const mergedState: Entities = {
         ...state,
         ...normalizedEntities,
         currentUser: payload
       };
+
+      console.log('mergedState:', mergedState);
 
       return mergedState;
     }

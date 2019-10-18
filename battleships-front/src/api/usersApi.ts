@@ -1,25 +1,18 @@
 import { fetcher } from '../helpers';
-import { ApiRequestOptions, LocalStorageSelectors, User } from '../types';
+import { ApiRequestOptions, LocalStorageOptions, User } from '../types';
 
 const usersApiOptions: ApiRequestOptions = { key: 'users' };
 
-export const loginUserApi = (user: User): Promise<User | undefined> => {
-  const findUserSelector: LocalStorageSelectors = {
+export const loginApi = (user: User): Promise<User | undefined> => {
+  const loginStorageOptions: LocalStorageOptions = {
     selector: (values: User[]) =>
-      values.find(x => x.name === user.name && x.pass === user.pass)
-  };
-
-  return fetcher.get({ ...usersApiOptions, data: user }, findUserSelector);
-};
-
-export const addUserApi = (user: User): Promise<User> => {
-  const alreadyHasUserNameSelector: LocalStorageSelectors = {
+      values.find(x => x.name === user.name && x.pass === user.pass),
     rejectSelector: (values: User[]) => values.some(x => x.name === user.name),
-    rejectMessage: 'Name already taken'
+    rejectMessage: 'Name already taken',
+    createNewIfNull: true
   };
 
-  return fetcher.post(
-    { ...usersApiOptions, data: user },
-    alreadyHasUserNameSelector
-  );
+  console.log('loginUserApi:', user);
+
+  return fetcher.get({ ...usersApiOptions, data: user }, loginStorageOptions);
 };

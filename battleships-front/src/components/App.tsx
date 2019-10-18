@@ -1,40 +1,95 @@
 import { History } from 'history';
 import * as React from 'react';
-import { Provider } from 'react-redux';
-import { Redirect, Route, Router, Switch } from 'react-router-dom';
+import { connect, Provider } from 'react-redux';
+import { Redirect, Router, Switch } from 'react-router-dom';
 import { Store } from 'redux';
-import { State } from '../types';
+import { ThemeProvider } from 'styled-components';
+import { routes, storager } from '../helpers';
+import { loginUser } from '../store/actions';
+import { State, Status, ThunkStateDispatch, User } from '../types';
+import NavMenu from './Common/NavMenu';
+import PrivateRoute from './Common/PrivateRoute';
+import StatusLoader from './Common/StatusLoader';
 import Game from './Game';
 import Ladder from './Ladder';
 import Login from './Login';
 import Profile from './Profile';
-import { FlexColumnCenter, theme, GlobalStyle } from './Styled';
-import { ThemeProvider } from 'styled-components';
-import NavMenu from './Common/NavMenu'
+import { FlexColumnCenter, GlobalStyle, theme } from './Styled';
 
 interface Props {
   store: Store<State>;
   history: History;
 }
 
-class App extends React.PureComponent<Props> {
+interface StateProps {
+  currentUser?: User;
+  loginStatus: Status;
+}
+
+interface DispatchProps {
+  login: (user: User) => void;
+}
+
+type AllProps = Props & StateProps & DispatchProps;
+
+class App extends React.PureComponent<AllProps> {
+  componentDidMount() {
+    const { login } = this.props;
+
+    // TODO decide how to persist user session, encryption etc..
+    const storageUser: User | undefined = storager.get('currentUser');
+
+    if (storageUser && storageUser.name && storageUser.pass) login(storageUser);
+  }
+
   render() {
-    const { store, history } = this.props;
+    const { store, history, loginStatus, currentUser } = this.props;
+
+    console.log('APP RENDER, currentUser:', currentUser);
+    const isLoggedIn = !!currentUser;
 
     return (
       <ThemeProvider theme={theme}>
         <Provider store={store}>
           <Router history={history}>
             <FlexColumnCenter>
-              <GlobalStyle />
-              <NavMenu />
-              <Switch>
-                <Route path="/login" component={Login} />
-                <Route path="/profile" component={Profile} />
-                <Route path="/ladder" component={Ladder} />
-                <Route path="/game" component={Game} />
-                <Redirect exact from={`/`} to={'/login'} />
-              </Switch>
+              <StatusLoader status={loginStatus}>
+                <>
+                  <GlobalStyle />
+                  <NavMenu />
+                  <Switch>
+                    <PrivateRoute
+                      path={routes.login}
+                      redirectTo={routes.game}
+                      redirectIf={isLoggedIn}
+                      component={Login}
+                    />
+                    <PrivateRoute
+                      path={routes.profile}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Profile}
+                    />
+                    <PrivateRoute
+                      path={routes.ladder}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Ladder}
+                    />
+                    <PrivateRoute
+                      path={routes.game}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Game}
+                    />
+                    <Redirect
+                      exact
+                      from={`/`}
+                      to={currentUser ? routes.game : routes.login}
+                    />
+                  </Switch>
+                </>
+              </StatusLoader>
             </FlexColumnCenter>
           </Router>
         </Provider>
@@ -43,6 +98,16 @@ class App extends React.PureComponent<Props> {
   }
 }
 
-export default App;
+const mapStateToProps = (state: State): StateProps => ({
+  currentUser: state.entities.currentUser,
+  loginStatus: state.statuses.login
+});
 
+const mapDispatchToProps = (dispatch: ThunkStateDispatch) => ({
+  login: (user: User) => dispatch(loginUser(user))
+});
 
+export default connect<StateProps, DispatchProps, Props>(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
