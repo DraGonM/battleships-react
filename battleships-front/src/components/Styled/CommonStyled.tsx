@@ -1,5 +1,5 @@
+import { ErrorMessage, Form } from 'formik';
 import styled from 'styled-components';
-import { Form, ErrorMessage } from 'formik';
 
 export const FlexColumn = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const FlexRow = styled.div`
 
 export const HeaderContainer = styled(FlexRow)`
   justify-content: space-between;
-`
+`;
 
 export const FormColumn = styled(Form)`
   display: flex;
@@ -29,7 +29,7 @@ export const Label = styled.label`
   color: ${props => props.theme.colors.input};
   font-size: 20px;
   margin: ${props => props.theme.padding};
-`
+`;
 
 export const FormLabel = styled(Label)`
   color: ${props => props.theme.colors.inputFont};
@@ -76,7 +76,7 @@ export const Button = styled.button`
   &:disabled {
     filter: brightness(75%);
   }
-`
+`;
 
 export const PrimaryButton = styled(Button)`
   background-color: ${props => props.theme.colors.primary};

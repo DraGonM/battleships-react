@@ -8,7 +8,7 @@ import { loginUser } from '../../store/actions';
 import { State, ThunkStateDispatch, User } from '../../types';
 import FormField from '../Common/FormField';
 import { InputFormik } from '../Common/InputComponent';
-import { FormColumn, PrimaryButton, Icon, FlexColumnCenter } from '../Styled';
+import { FlexColumnCenter, FormColumn, Icon, PrimaryButton } from '../Styled';
 import { LoginPanel } from '../Styled';
 
 interface StateProps {

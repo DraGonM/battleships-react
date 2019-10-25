@@ -1,10 +1,13 @@
 import { History } from 'history';
 import * as React from 'react';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 import { connect, Provider } from 'react-redux';
 import { Redirect, Router, Switch } from 'react-router-dom';
 import { Store } from 'redux';
 import { ThemeProvider } from 'styled-components';
-import { routes, storager } from '../helpers';
+import { storager } from '../helpers';
+import { routes } from '../settings';
 import { loginUser } from '../store/actions';
 import { State, Status, ThunkStateDispatch, User } from '../types';
 import Header from './Common/Header';
@@ -50,45 +53,47 @@ class App extends React.PureComponent<AllProps> {
     return (
       <ThemeProvider theme={theme}>
         <Provider store={store}>
-          <Router history={history}>
-            <StatusLoader status={loginStatus}>
-              <>
-                <GlobalStyle />
-                <Header />
-                <Switch>
-                  <PrivateRoute
-                    path={routes.login}
-                    redirectTo={routes.game}
-                    redirectIf={isLoggedIn}
-                    component={Login}
-                  />
-                  <PrivateRoute
-                    path={routes.profile}
-                    redirectTo={routes.login}
-                    redirectIf={!isLoggedIn}
-                    component={Profile}
-                  />
-                  <PrivateRoute
-                    path={routes.ladder}
-                    redirectTo={routes.login}
-                    redirectIf={!isLoggedIn}
-                    component={Ladder}
-                  />
-                  <PrivateRoute
-                    path={routes.game}
-                    redirectTo={routes.login}
-                    redirectIf={!isLoggedIn}
-                    component={Game}
-                  />
-                  <Redirect
-                    exact
-                    from={`/`}
-                    to={currentUser ? routes.game : routes.login}
-                  />
-                </Switch>
-              </>
-            </StatusLoader>
-          </Router>
+          <DndProvider backend={HTML5Backend}>
+            <Router history={history}>
+              <StatusLoader status={loginStatus}>
+                <>
+                  <GlobalStyle />
+                  <Header />
+                  <Switch>
+                    <PrivateRoute
+                      path={routes.login}
+                      redirectTo={routes.game}
+                      redirectIf={isLoggedIn}
+                      component={Login}
+                    />
+                    <PrivateRoute
+                      path={routes.profile}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Profile}
+                    />
+                    <PrivateRoute
+                      path={routes.ladder}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Ladder}
+                    />
+                    <PrivateRoute
+                      path={routes.game}
+                      redirectTo={routes.login}
+                      redirectIf={!isLoggedIn}
+                      component={Game}
+                    />
+                    <Redirect
+                      exact
+                      from={`/`}
+                      to={currentUser ? routes.game : routes.login}
+                    />
+                  </Switch>
+                </>
+              </StatusLoader>
+            </Router>
+          </DndProvider>
         </Provider>
       </ThemeProvider>
     );
